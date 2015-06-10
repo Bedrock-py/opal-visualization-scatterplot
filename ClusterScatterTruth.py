@@ -11,19 +11,15 @@
 # permission of the Georgia Tech Research Institute.
 #****************************************************************/
 
-from ..visualization import VisBase
-import utils
+from visualization.utils import *
 import json, random
-from vincent import *
+import vincent
 import numpy as np
 import pandas as pd
-from colors import brews
+from visualization.colors import brews
 
 
-def get_classname():
-    return 'ClusterScatterTruth'
-    
-class ClusterScatterTruth(VisBase):
+class ClusterScatterTruth(Visualization):
     def __init__(self):
         super(ClusterScatterTruth, self).__init__()
         self.inputs = ['matrix.csv', 'truth_labels.csv']
@@ -35,8 +31,8 @@ class ClusterScatterTruth(VisBase):
 
     def initialize(self, inputs):
         # self.features = utils.load_features(inputs['features.txt'])
-        self.matrix = utils.load_dense_matrix(inputs['matrix.csv']['rootdir'] + 'matrix.csv')
-        self.assignments = utils.load_assignments(inputs['truth_labels.csv']['rootdir'] + 'truth_labels.csv')
+        self.matrix = load_dense_matrix(inputs['matrix.csv']['rootdir'] + 'matrix.csv')
+        self.assignments = load_assignments(inputs['truth_labels.csv']['rootdir'] + 'truth_labels.csv')
 
     def create(self):
         red_mat = self.matrix.ix[:, [self.x_feature,self.y_feature]]
@@ -96,40 +92,40 @@ class ClusterScatterTruth(VisBase):
         scales = zip(x_range, y_range)
         print scales
         data = pd.DataFrame(data=scales, columns=['x','y'])
-        temp = Chart(data=data, width=200, height=150, iter_idx='x').data[0]
+        temp = vincent.Chart(data=data, width=200, height=150, iter_idx='x').data[0]
         temp.name ='scales'
         vis.data.append(temp)
 
         x_type = 'linear'
         vis.scales += [
-                    Scale(name='x', type=x_type, range='width', zero=False,
-                          domain=DataRef(data='scales', field="data.idx")),
-                    Scale(name='y', range='height', nice=True, zero=False,
-                          domain=DataRef(data='scales', field="data.val")),
-                    Scale(name='color', range='category10', type='ordinal',
+                    vincent.Scale(name='x', type=x_type, range='width', zero=False,
+                          domain=vincent.DataRef(data='scales', field="data.idx")),
+                    vincent.Scale(name='y', range='height', nice=True, zero=False,
+                          domain=vincent.DataRef(data='scales', field="data.val")),
+                    vincent.Scale(name='color', range='category10', type='ordinal',
                           domain=cluster_mat.keys())
 
                 ]
-        vis.axes += [Axis(type='x', scale='x'),
-                    Axis(type='y', scale='y')]
+        vis.axes += [vincent.Axis(type='x', scale='x'),
+                    vincent.Axis(type='y', scale='y')]
 
         ### iterate
         for key, value in cluster_mat.items():
 
-            from_ = MarkRef(
+            from_ = vincent.vincent.MarkRef(
                         data=key,
-                        transform=[Transform(type='facet', keys=['data.col'])])
+                        transform=[vincent.Transform(type='facet', keys=['data.col'])])
             
-            enter_props = PropertySet(
-                        x=ValueRef(scale='x', field="data.idx"),
-                        y=ValueRef(scale='y', field="data.val"),
-                        size=ValueRef(value=35),
-                        fill=ValueRef(value=brews['Category10'][int(key)]),
-                        opacity=ValueRef(value=.8))
+            enter_props = vincent.PropertySet(
+                        x=vincent.ValueRef(scale='x', field="data.idx"),
+                        y=vincent.ValueRef(scale='y', field="data.val"),
+                        size=vincent.ValueRef(value=35),
+                        fill=vincent.ValueRef(value=brews['Category10'][int(key)]),
+                        opacity=vincent.ValueRef(value=.8))
             
-            marks = [Mark(type='symbol',
-                                  properties=MarkProperties(enter=enter_props))]
-            mark_group = Mark(type='group', from_=from_, marks=marks)
+            marks = [vincent.Mark(type='symbol',
+                                  properties=vincent.MarkProperties(enter=enter_props))]
+            mark_group = vincent.Mark(type='group', from_=from_, marks=marks)
             vis.marks.append(mark_group)
 
         vis.legend(title="Clusters")
@@ -137,7 +133,7 @@ class ClusterScatterTruth(VisBase):
         self.json = vis.to_json()
 
 
-        vis_id = 'vis_' + utils.get_new_id()
+        vis_id = 'vis_' + get_new_id()
 
         script = '<script> spec =' + self.json + ';vg.parse.spec(spec, function(chart) { chart({el:"#' + vis_id + '"}).update(); });</script>'
         

@@ -12,15 +12,12 @@
 # permission of the Georgia Tech Research Institute.
 #****************************************************************/
 
-from ..visualization import VisBase
-import utils
+from visualization.utils import *
 import vincent, json
+from visualization.colors import brews
 
 
-def get_classname():
-    return 'Scatter'
-    
-class Scatter(VisBase):
+class Scatter(Visualization):
     def __init__(self):
         super(Scatter, self).__init__()
         self.inputs = ['matrix.csv', 'features.txt']
@@ -30,8 +27,8 @@ class Scatter(VisBase):
         self.description = ''
 
     def initialize(self, inputs):
-        self.features = utils.load_features(inputs['features.txt']['rootdir'] + 'features.txt')
-        self.matrix = utils.load_dense_matrix(inputs['matrix.csv']['rootdir'] + 'matrix.csv', names=self.features)
+        self.features = load_features(inputs['features.txt']['rootdir'] + 'features.txt')
+        self.matrix = load_dense_matrix(inputs['matrix.csv']['rootdir'] + 'matrix.csv', names=self.features)
 
     def create(self):
         scatter = vincent.Scatter(self.matrix, iter_idx=0)
@@ -50,7 +47,7 @@ class Scatter(VisBase):
                     data['scales'][idx]['zero'] = False
         self.json = json.dumps(data)
 
-        vis_id = 'vis_' + utils.get_new_id()
+        vis_id = 'vis_' + get_new_id()
         script = '<script> spec =' + self.json + ';vg.parse.spec(spec, function(chart) { chart({el:"#' + vis_id + '"}).update(); });</script>'
         
         return {'data':script,'type':'default', 'id': vis_id, 'title': 'Scatterplot'}
