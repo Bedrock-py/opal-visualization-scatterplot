@@ -60,7 +60,7 @@ class ClusterScatterTruth(Visualization):
         print cluster_mat
         #vincent portions
 
-        vis = Chart(data=[1,2], width=600, height=400, iter_idx=0)
+        vis = vincent.Chart(data=[1,2], width=600, height=400, iter_idx=0)
         min_x = []
         min_y = []
         max_x = []
@@ -76,7 +76,7 @@ class ClusterScatterTruth(Visualization):
             max_x.append(max_all[0])
             max_y.append(max_all[1])
 
-            temp = Chart(data=data, width=200, height=150, iter_idx='x').data[0]
+            temp = vincent.Chart(data=data, width=200, height=150, iter_idx='x').data[0]
             temp.name = key
             vis.data.append(temp)
 
