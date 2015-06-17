@@ -112,7 +112,7 @@ class ClusterScatterTruth(Visualization):
         ### iterate
         for key, value in cluster_mat.items():
 
-            from_ = vincent.vincent.MarkRef(
+            from_ = vincent.MarkRef(
                         data=key,
                         transform=[vincent.Transform(type='facet', keys=['data.col'])])
             
