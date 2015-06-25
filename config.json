@@ -1,0 +1,14 @@
+{ "opal-visualization-scatterplot": 
+        {
+            "description": "Scatterplot",
+            "host": "github.gatech.edu",
+            "repo": "Bedrock/opal-visualization-scatterplot.git",
+            "units": "ClusterScatter.py ClusterScatterTruth.py Scatter.py",
+            "supports": "",
+            "python_dependencies": "",
+            "system_dependencies": "",
+            "api": "visualization",
+            "interface": "visualization",
+            "installation_script": ""
+        }
+}
