@@ -11,12 +11,12 @@
 # permission of the Georgia Tech Research Institute.
 #****************************************************************/
 
-from visualization.utils import *
+from bedrock.visualization.utils import *
 import json, random
 import vincent
 import numpy as np
 import pandas as pd
-from visualization.colors import brews
+from bedrock.visualization.colors import brews
 
 
 class ClusterScatterTruth(Visualization):

@@ -12,9 +12,9 @@
 # permission of the Georgia Tech Research Institute.
 #****************************************************************/
 
-from visualization.utils import *
+from bedrock.visualization.utils import *
 import vincent, json
-from visualization.colors import brews
+from bedrock.visualization.colors import brews
 
 
 class Scatter(Visualization):
