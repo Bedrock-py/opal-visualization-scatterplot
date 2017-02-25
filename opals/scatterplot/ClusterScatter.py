@@ -14,6 +14,7 @@
 from bedrock.visualization.utils import *
 import json, random
 import vincent
+import os
 import numpy as np
 import pandas as pd
 from bedrock.visualization.colors import brews
@@ -30,8 +31,8 @@ class ClusterScatter(Visualization):
 
     def initialize(self, inputs):
         # self.features = utils.load_features(inputs['features.txt'])
-        self.matrix = load_dense_matrix(inputs['matrix.csv']['rootdir'] + 'matrix.csv')
-        self.assignments = load_assignments(inputs['assignments.csv']['rootdir'] + 'assignments.csv')
+        self.matrix = load_dense_matrix(os.path.join(inputs['matrix.csv']['rootdir'], 'matrix.csv'))
+        self.assignments = load_assignments(os.path.join(inputs['assignments.csv']['rootdir'], 'assignments.csv'))
 
     def create(self):
         red_mat = self.matrix.ix[:, [self.x_feature,self.y_feature]]
