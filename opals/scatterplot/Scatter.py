@@ -12,8 +12,10 @@
 # permission of the Georgia Tech Research Institute.
 #****************************************************************/
 
+import vincent
+import json
+import os
 from bedrock.visualization.utils import *
-import vincent, json
 from bedrock.visualization.colors import brews
 
 
@@ -27,8 +29,8 @@ class Scatter(Visualization):
         self.description = ''
 
     def initialize(self, inputs):
-        self.features = load_features(inputs['features.txt']['rootdir'] + 'features.txt')
-        self.matrix = load_dense_matrix(inputs['matrix.csv']['rootdir'] + 'matrix.csv', names=self.features)
+        self.features = load_features(os.path.join(inputs['features.txt']['rootdir'], 'features.txt'))
+        self.matrix = load_dense_matrix(os.path.join(inputs['matrix.csv']['rootdir'] , 'matrix.csv'), names=self.features)
 
     def create(self):
         scatter = vincent.Scatter(self.matrix, iter_idx=0)
